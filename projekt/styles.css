@@ -1,0 +1,199 @@
+/* Podstawowe style dla całej strony */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url("https://wallpapersmug.com/download/1440x900/830a7c/minimalism-airplane-over-mountains.jpg");
+    background-color: #cccccc; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    height: 1200px;
+}
+
+/* Styl kontenera */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px;
+    background: #3d3d3d; /* Ciemniejsze tło dla kontenera */
+    border-radius: 8px; /* Zaokrąglone rogi */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Cień dla efektu głębi */
+}
+
+/* Nagłówki */
+h2 {
+    color: #76b900; /* Jasnozielony kolor */
+    margin-bottom: 10px;
+    font-size: 24px; /* Większy rozmiar czcionki */
+}
+
+h3 {
+    color: #f0f0f0; /* Jasnoszary kolor dla podnagłówków */
+    margin: 10px 0;
+    font-size: 20px; /* Większy rozmiar czcionki */
+}
+
+/* Styl listy użytkowników */
+ul {
+    list-style-type: none; /* Usunięcie punktów listy */
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #4e7f9d; /* Ciemniejszy błękit dla elementów listy */
+    border-radius: 5px; /* Zaokrąglone rogi */
+    transition: background 0.3s; /* Płynna zmiana tła */
+}
+
+li:hover {
+    background: #5a9dc2; /* Jaśniejszy błękit przy najeździe */
+}
+
+/* Przyciski */
+button {
+    background: #76b900; /* Jasnozielony kolor tła */
+    color: white; /* Biały tekst */
+    border: none; /* Bez obramowania */
+    border-radius: 5px; /* Zaokrąglone rogi */
+    padding: 10px 15px; /* Wewnętrzne odstępy */
+    cursor: pointer; /* Kursor wskazujący */
+    transition: background 0.3s, transform 0.2s; /* Płynna zmiana tła i transformacji */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Cień dla efektu głębi */
+}
+
+button:hover {
+    background: #659f00; /* Ciemniejszy zielony przy najeździe */
+    transform: translateY(-2px); /* Lekki efekt unoszenia */
+}
+
+/* Styl dla linków */
+a {
+    color: #76b900; /* Jasnozielony kolor dla linków */
+    text-decoration: none; /* Usunięcie podkreślenia */
+    transition: color 0.3s; /* Płynna zmiana koloru */
+}
+
+a:hover {
+    color: #659f00; /* Ciemniejszy zielony przy najeździe */
+    text-decoration: underline; /* Dodaj podkreślenie */
+}
+
+/* Formularz */
+form {
+    margin-top: 20px; /* Odstęp od góry */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 96%; /* Szerokość 100% dla inputów */
+    padding: 10px; /* Wewnętrzne odstępy */
+    border: 1px solid #bbb; /* Szare obramowanie */
+    border-radius: 5px; /* Zaokrąglone rogi */
+    margin-bottom: 15px; /* Odstęp między polami */
+    background-color: rgb(200, 255, 200); /* Jaśniejszy zielony */
+}
+
+/* Styl dla komunikatów o sukcesie i błędach */
+.success-message {
+    background: rgba(212, 237, 218, 0.9); /* Jasnozielone tło dla sukcesu */
+    color: #155724; /* Ciemnozielony tekst */
+    padding: 10px;
+    border: 1px solid #c3e6cb; /* Zielone obramowanie */
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.error-message {
+    background: rgba(248, 215, 218, 0.9); /* Jasnoczerwone tło dla błędów */
+    color: #721c24; /* Ciemnoczerwony tekst */
+    padding: 10px;
+    border: 1px solid #f5c6cb; /* Czerwone obramowanie */
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+table {
+    width: 100%; /* Umożliwia pełne wykorzystanie dostępnej szerokości */
+    border-collapse: collapse; /* Usuwa podwójne ramki */
+    background-color: hsl(113, 77%, 86%); /* Jaśniejsze tło tabeli dla lepszej widoczności */
+    border: 2px solid #76b900; /* Zielona ramka wokół tabeli */
+}
+
+th, td {
+    border: 1px solid #76b900; /* Zielona ramka wokół komórek */
+    padding: 10px; /* Wewnętrzny margines dla komórek */
+    text-align: left; /* Wyrównanie tekstu do lewej */
+}
+
+th {
+    background-color: #76b900; /* Jasnozielone tło nagłówków */
+    color: white; /* Kolor tekstu nagłówków */
+}
+
+tr:nth-child(even) {
+    background-color: #e3ffe3; /* Jaśniejszy zielony kolor tła dla parzystych wierszy */
+}
+
+tr:hover {
+    background-color: #c0e5c0; /* Jaśniejszy kolor tła dla wiersza, gdy na nim najedziesz myszą */
+}
+
+.delete-task, .delete-report {
+    background: #ff4d4d; /* Czerwony kolor dla przycisków usuwania */
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px; /* Mniejsze wewnętrzne odstępy */
+    transition: background 0.3s;
+}
+
+.delete-task:hover, .delete-report:hover {
+    background: #e60000; /* Ciemniejszy czerwony przy najeździe */
+}
+
+p {
+    color: lightblue; /* Kolor dla paragrafów */
+}
+
+label {
+    color: lightblue; /* Kolor dla etykiet */
+}
+
+#searchInput {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 400px; /* Maksymalna szerokość pola wyszukiwania */
+}
+
+.profile-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Responsywność */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    h2, h3 {
+        font-size: 20px;
+    }
+
+    button {
+        padding: 8px 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        font-size: 14px;
+    }
+}

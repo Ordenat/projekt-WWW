@@ -21,14 +21,24 @@ require 'employeephp.php'; // Make sure this file exists and is properly named
     <h2>Pulpit Pracownika</h2>
     <p>Witaj, <?= htmlspecialchars($currentUser['username']) ?>!</p>
     
-    <div class="profile-section">
-        <h3>Twoje zdjęcie profilowe:</h3>
-        <img src="<?= htmlspecialchars($currentUser['profile_picture']) ?>" alt="Zdjęcie profilowe" style="width: 200px; height: auto; border-radius: 30%;">
-        <form action="employee_dashboard.php" method="POST" enctype="multipart/form-data">
-            <input type="file" name="profile_picture" accept="image/*" required>
-            <button type="submit">Prześlij zdjęcie</button>
+    <div class="profile">
+    <h2>Zdjęcie profilowe</h2>
+    <?php if (!empty($currentUser['profile_picture']) && file_exists($currentUser['profile_picture'])): ?>
+        <img src="<?php echo htmlspecialchars($currentUser['profile_picture']); ?>" alt="Zdjęcie profilowe" style="max-width: 150px; max-height: 150px; border-radius: 50%;">
+        <form action="" method="POST">
+            <button type="submit" name="delete_picture" onclick="return confirm('Czy na pewno chcesz usunąć zdjęcie profilowe?');">Usuń zdjęcie</button>
         </form>
-    </div>
+    <?php else: ?>
+        <p>Nie masz jeszcze zdjęcia profilowego.</p>
+    <?php endif; ?>
+
+    <!-- Formularz do dodawania zdjęcia profilowego -->
+    <form action="" method="POST" enctype="multipart/form-data">
+        <label for="profile_picture">Wybierz zdjęcie:</label>
+        <input type="file" name="profile_picture" id="profile_picture" required>
+        <button type="submit">Dodaj zdjęcie</button>
+    </form>
+</div>
 
     <h3>Przydzielone zadania:</h3>
     <ul id="task-list">

@@ -84,16 +84,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_task_id'])) {
 // Obsługa usuwania projektu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project_id'])) {
     $project_id = (int)$_POST['delete_project_id'];
-    $deleteQuery = $connection->prepare("DELETE FROM projects WHERE id = ?");
-    $deleteQuery->bind_param("i", $project_id);
-    if ($deleteQuery->execute()) {
-        $message = 'Projekt został usunięty.';
+
+    // Najpierw pobierz ścieżkę do pliku projektu
+    $selectQuery = $connection->prepare("SELECT file_path FROM projects WHERE id = ?");
+    $selectQuery->bind_param("i", $project_id);
+    $selectQuery->execute();
+    $result = $selectQuery->get_result();
+    
+    if ($result->num_rows > 0) {
+        $project = $result->fetch_assoc();
+        $file_path = $project['file_path'];
+
+        // Usunięcie pliku z systemu plików, jeśli istnieje
+        if (!empty($file_path) && file_exists($file_path)) {
+            unlink($file_path);
+        }
+
+        // Usunięcie projektu z bazy danych
+        $deleteQuery = $connection->prepare("DELETE FROM projects WHERE id = ?");
+        $deleteQuery->bind_param("i", $project_id);
+        if ($deleteQuery->execute()) {
+            $message = 'Projekt został usunięty.';
+        } else {
+            $error_message = 'Nie udało się usunąć projektu.';
+        }
     } else {
-        $error_message = 'Nie udało się usunąć projektu.';
+        $error_message = 'Projekt nie został znaleziony.';
     }
+
     header('Location: manager_dashboard.php'); // Przekierowanie po usunięciu
     exit();
 }
+
 // Obsługa pobierania projektu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_project_id'])) {
     $project_id = (int)$_POST['download_project_id'];

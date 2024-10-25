@@ -15,32 +15,53 @@ $query->execute();
 $currentUser = $query->get_result()->fetch_assoc();
 
 // Przetwarzanie przesyłania zdjęcia
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-    $uploads_dir = 'uploads/profile_images/';
-    if (!is_dir($uploads_dir)) mkdir($uploads_dir, 0755, true);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obsługa przesyłania zdjęcia
+    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+        $uploads_dir = 'uploads/profile_images/';
+        if (!is_dir($uploads_dir)) mkdir($uploads_dir, 0755, true);
 
-    $file_name = uniqid() . '_' . basename($_FILES['profile_picture']['name']);
-    $file_path = $uploads_dir . $file_name;
+        $file_name = uniqid() . '_' . basename($_FILES['profile_picture']['name']);
+        $file_path = $uploads_dir . $file_name;
 
-    // Sprawdzenie, czy plik jest obrazem
-    $file_type = mime_content_type($_FILES['profile_picture']['tmp_name']);
-    if (strpos($file_type, 'image/') === false) {
-        // Obsłuż błąd: niepoprawny typ pliku
+        // Sprawdzenie, czy plik jest obrazem
+        $file_type = mime_content_type($_FILES['profile_picture']['tmp_name']);
+        if (strpos($file_type, 'image/') === false) {
+            // Obsłuż błąd: niepoprawny typ pliku
+            echo "Błąd: Niepoprawny typ pliku.";
+            exit;
+        }
+
+        // Usunięcie starego zdjęcia, jeśli istnieje
+        if (!empty($currentUser['profile_picture']) && file_exists($currentUser['profile_picture'])) {
+            unlink($currentUser['profile_picture']);
+        }
+
+        if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $file_path)) {
+            // Zaktualizuj ścieżkę zdjęcia w bazie danych
+            $query = $connection->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
+            $query->bind_param("si", $file_path, $user_id);
+            $query->execute();
+
+            // Zaktualizuj informację o użytkowniku
+            $currentUser['profile_picture'] = $file_path;
+        }
     }
 
-    // Usunięcie starego zdjęcia, jeśli istnieje
-    if (!empty($currentUser['profile_picture']) && file_exists($currentUser['profile_picture'])) {
-        unlink($currentUser['profile_picture']);
-    }
+    // Obsługa usunięcia zdjęcia
+    if (isset($_POST['delete_picture'])) {
+        // Usunięcie starego zdjęcia, jeśli istnieje
+        if (!empty($currentUser['profile_picture']) && file_exists($currentUser['profile_picture'])) {
+            unlink($currentUser['profile_picture']);
+        }
 
-    if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $file_path)) {
-        // Zaktualizuj ścieżkę zdjęcia w bazie danych
-        $query = $connection->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
-        $query->bind_param("si", $file_path, $user_id);
+        // Zaktualizuj ścieżkę zdjęcia w bazie danych na NULL lub odpowiednią wartość
+        $query = $connection->prepare("UPDATE users SET profile_picture = NULL WHERE id = ?");
+        $query->bind_param("i", $user_id);
         $query->execute();
 
         // Zaktualizuj informację o użytkowniku
-        $currentUser['profile_picture'] = $file_path;
+        $currentUser['profile_picture'] = null; // Ustawienie na null po usunięciu
     }
 }
 
